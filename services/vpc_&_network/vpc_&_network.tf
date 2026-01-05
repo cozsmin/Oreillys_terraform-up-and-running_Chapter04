@@ -168,4 +168,8 @@ resource "aws_subnet" "subnet_ref0_02" {
   tags = {
     Name = "${var.vpc_name}-subnet_ref0_02"
   }
+
+  lifecycle {
+    create_before_destroy = false
+  }
 }
