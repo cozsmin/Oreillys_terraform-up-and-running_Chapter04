@@ -161,12 +161,12 @@ resource "aws_subnet" "publicsubnet00c" {
 }
 
 
-resource "aws_subnet" "subnet_ref0_02" {
+resource "aws_subnet" "subnet_ref0_autoupdate" {
   vpc_id     = aws_vpc.vpc00.id
   cidr_block = "10.0.254.0/26"
 
   tags = {
-    Name = "${var.vpc_name}-subnet_ref0_02"
+    Name = "${var.vpc_name}-subnet_ref0_03"
   }
 
   lifecycle {
