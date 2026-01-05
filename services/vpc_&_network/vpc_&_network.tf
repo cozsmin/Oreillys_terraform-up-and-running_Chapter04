@@ -176,7 +176,7 @@ resource "aws_subnet" "subnet_ref0_02" {
 
 resource "aws_subnet" "subnet_branched" {
   vpc_id     = aws_vpc.vpc00.id
-  cidr_block = "10.0.254.64.0/26"
+  cidr_block = "10.0.254.64/26"
 
   tags = {
     Name = "${var.vpc_name}-subnet_branched"
