@@ -163,10 +163,23 @@ resource "aws_subnet" "publicsubnet00c" {
 
 resource "aws_subnet" "subnet_ref0_02" {
   vpc_id     = aws_vpc.vpc00.id
-  cidr_block = "10.0.254.0/24"
+  cidr_block = "10.0.254.0/26"
 
   tags = {
     Name = "${var.vpc_name}-subnet_ref0_02"
+  }
+
+  lifecycle {
+    create_before_destroy = false
+  }
+}
+
+resource "aws_subnet" "subnet_branched" {
+  vpc_id     = aws_vpc.vpc00.id
+  cidr_block = "10.0.254.64.0/26"
+
+  tags = {
+    Name = "${var.vpc_name}-subnet_branched"
   }
 
   lifecycle {
