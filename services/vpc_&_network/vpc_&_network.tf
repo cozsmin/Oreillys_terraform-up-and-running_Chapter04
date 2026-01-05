@@ -166,6 +166,6 @@ resource "aws_subnet" "subnet_ref0_01" {
   cidr_block = "10.0.254.0/24"
 
   tags = {
-    Name = "${aws_vpc.vpc00.name}-subnet_ref0_01"
+    Name = "${var.vpc_name}-subnet_ref0_01"
   }
 }

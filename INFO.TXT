@@ -1,0 +1,9 @@
+cd modules
+git init
+git add .
+git commit -m "Initial commit of modules repo"
+git remote add origin "(URL OF REMOTE GIT REPOSITORY)"
+git push origin main
+
+git tag -a "v0.0.1" -m "First release of webserver-cluster module"
+git push --follow-tags
