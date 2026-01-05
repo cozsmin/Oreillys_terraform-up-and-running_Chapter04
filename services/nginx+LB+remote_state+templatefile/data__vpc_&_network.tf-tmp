@@ -1,0 +1,29 @@
+data "terraform_remote_state"
+
+
+resource "aws_vpc" "vpc00" {
+resource "aws_eip" "bastion00_eip" {
+#resource "aws_eip" "privsubnet00_eip" {
+resource "aws_eip_association" "bastion00_eip_assoc" {
+resource "aws_internet_gateway" "igw00" {
+resource "aws_nat_gateway" "nat00" {
+resource "aws_route_table" "igw00_rt00" {
+resource "aws_route_table" "nat00_rt00" {
+resource "aws_route_table_association" "igw00_rt00_assoc00a" {
+resource "aws_route_table_association" "igw00_rt00_assoc00b" {
+resource "aws_route_table_association" "igw00_rt00_assoc00c" {
+resource "aws_route_table_association" "nat00_rt00_assoc00a" {
+resource "aws_route_table_association" "nat00_rt00_assoc00b" {
+resource "aws_route_table_association" "nat00_rt00_assoc00c" {
+resource "aws_subnet" "privsubnet00a" {
+resource "aws_subnet" "privsubnet00b" {
+resource "aws_subnet" "privsubnet00c" {
+resource "aws_subnet" "publicsubnet00a" {
+resource "aws_subnet" "publicsubnet00b" {
+resource "aws_subnet" "publicsubnet00c" {
+resource "aws_security_group" "sg00" {
+resource "aws_vpc_security_group_egress_rule" "vpc00_egress00" {
+resource "aws_vpc_security_group_ingress_rule" "SSH" {
+resource "aws_vpc_security_group_ingress_rule" "http" {
+resource "aws_vpc_security_group_ingress_rule" "HTTPS" {
+resource "aws_vpc_security_group_ingress_rule" "pinggus" {

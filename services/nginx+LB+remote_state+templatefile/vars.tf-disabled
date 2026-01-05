@@ -1,0 +1,190 @@
+variable "vpc_name" {
+ default = "vpc00"
+}
+
+variable "amiz" {
+  type = any
+  default = {
+    debian = {
+      "eu-central-1" = {
+        "13" = "ami-00ebb2b898eebe380"
+      }
+    }
+  }
+}
+
+variable "http_port" {
+  default = 80
+}
+
+variable "https_port" {
+  default = 443
+}
+
+variable "ssh_port" {
+  default = 22
+}
+
+## /var/lib/cloud/instance/scripts/part-001
+variable "d13_nginx_install" {
+#    /usr/bin/sudo  /usr/bin/bash -c "/usr/bin/printf \"\n\nDB = ${data.terraform_remote_state.mysql00_state.address}:${data.terraform_remote_state.mysql00_state.port}\n\n\" >> /var/www/html/index.html" >> /tmp/user_data 2>&1
+    ## ^^^ variables not allowwedd
+
+  default = <<-EOF
+    #!/bin/bash
+    printf "\n\n`date` :\n\n" >> /tmp/user_data
+    /usr/bin/sudo  /usr/bin/bash -c "/usr/bin/apt -o Acquire::http::Timeout=\"600\" update && /usr/bin/sudo /usr/bin/apt install -y nginx dmidecode" >> /tmp/user_data 2>&1
+    /usr/bin/sudo  /usr/bin/bash -c "/usr/bin/printf \"`hostname` : `date` \n\n`dmidecode -t1`\n\n\" > /var/www/html/index.html " >> /tmp/user_data 2>&1
+    /usr/bin/sudo  /usr/bin/mkdir -p /var/www/html/acucaraccia/ >> /tmp/user_data 2>&1
+    /usr/bin/sudo  /usr/bin/bash -c "/usr/bin/printf \"ACUCARAAAACIIAAAAAAAAA\n\n\" > /var/www/html/acucaraccia/index.html " >> /tmp/user_data 2>&1
+    /usr/bin/sudo  /usr/bin/bash -c "/usr/bin/cat /var/www/html/index.html >> /var/www/html/acucaraccia/index.html " >> /tmp/user_data 2>&1
+    /usr/bin/sudo  /usr/bin/bash -c "/usr/bin/systemctl enable --now nginx" >> /tmp/user_data 2>&1
+    /usr/bin/sudo  /usr/bin/chown -R www-data:www-data /var/www >> /tmp/user_data 2>&1
+    printf "\n####################################\n\n" >> /tmp/user_data
+    EOF
+}
+
+variable "debian_nginx_install" {
+#      /usr/bin/sudo  /usr/bin/bash -c "/usr/bin/printf \"\n\nDB = ${data.terraform_remote_state.mysql00_state.address}:${data.terraform_remote_state.mysql00_state.port}\n\n\" >> /var/www/html/index.html" >> /tmp/user_data 2>&1
+      ## ^^^ variables not allowedd
+
+    default = <<-EOF
+      #!/bin/bash
+      printf "\n\n`date` :\n\n" >> /tmp/user_data
+      /usr/bin/sudo  /usr/bin/bash -c "/usr/bin/apt -o Acquire::http::Timeout=\"600\" update && /usr/bin/sudo /usr/bin/apt install -y nginx dmidecode" >> /tmp/user_data 2>&1
+      /usr/bin/sudo  /usr/bin/bash -c "/usr/bin/printf \"`hostname` : `date` \n\n`dmidecode -t1`\n\n\" > /var/www/html/index.html " >> /tmp/user_data 2>&1
+      /usr/bin/sudo  /usr/bin/mkdir -p /var/www/html/acucaraccia/ >> /tmp/user_data 2>&1
+      /usr/bin/sudo  /usr/bin/bash -c "/usr/bin/printf \"ACUCARAAAACIIAAAAAAAAA\n\n\" > /var/www/html/acucaraccia/index.html " >> /tmp/user_data 2>&1
+      /usr/bin/sudo  /usr/bin/bash -c "/usr/bin/cat /var/www/html/index.html >> /var/www/html/acucaraccia/index.html " >> /tmp/user_data 2>&1
+      /usr/bin/sudo  /usr/bin/bash -c "/usr/bin/systemctl enable --now nginx" >> /tmp/user_data 2>&1
+      /usr/bin/sudo  /usr/bin/chown -R www-data:www-data /var/www >> /tmp/user_data 2>&1
+      printf "\n####################################\n\n" >> /tmp/user_data
+      EOF
+}
+
+variable "d13a_ip" {
+  default = "10.0.0.10"
+}
+
+variable "bastion_instance_type" {
+  default = "t3.nano"
+}
+
+variable "d13a_instance_type" {
+  default = "t3.micro"
+}
+
+variable "launch00_instance_type" {
+#  default = "m6a.large"
+  default = "t3.small"
+}
+
+variable "ca_certificate" {
+  default = <<EOX
+-----BEGIN CERTIFICATE-----
+MIIENjCCAx6gAwIBAgIUBHYvSWzA0ggERo+LxGALpCm/78IwDQYJKoZIhvcNAQEL
+BQAwgYUxCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRYwFAYDVQQH
+DA1TYW4gRnJhbmNpc2NvMRUwEwYDVQQKDAxZb3VyIENvbXBhbnkxGDAWBgNVBAsM
+D1lvdXIgRGVwYXJ0bWVudDEYMBYGA1UEAwwPYWN1Y2FyYWNjaWEua29tMB4XDTI1
+MTIyMDE2MTUyMFoXDTI2MTIyMDE2MTUyMFowgYUxCzAJBgNVBAYTAlVTMRMwEQYD
+VQQIDApDYWxpZm9ybmlhMRYwFAYDVQQHDA1TYW4gRnJhbmNpc2NvMRUwEwYDVQQK
+DAxZb3VyIENvbXBhbnkxGDAWBgNVBAsMD1lvdXIgRGVwYXJ0bWVudDEYMBYGA1UE
+AwwPYWN1Y2FyYWNjaWEua29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAt5jNTwy1Sixm86dFN8SQGP4PZ/2jOWeQdtYSBRLUJWD1F27llZomSplVUb+8
+Yuggs8bXovQpPNrZb4KBqp6G+Md4NSG8DFxCsbULKG2p6jSUW8xGTHjh/AkwJ49E
+M1UE6ExP9xb2NUCAmgs/Il37G8HJucuydIgf/5vMSzfyUUBq0h4olXrP/o0O35gi
+GGck2B9EZFGfvFnnAPoHynSExIrmgPqnjku7K17kNWjch5Wexm40ZG9itZpUSOAt
+9vdFpaayyGJ2z5/dNwWsq9Ss7Uj0r50CJ83Oy/tdRLRJBG//U3yxZ6iLwtKFCVug
+YYXajt80dp3+PmVDjhNJj1j9rwIDAQABo4GbMIGYMB0GA1UdDgQWBBRgSOt++K89
+26znULp+/nHDbObLmzAfBgNVHSMEGDAWgBRgSOt++K8926znULp+/nHDbObLmzAP
+BgNVHRMBAf8EBTADAQH/MEUGA1UdEQQ+MDyCD2FjdWNhcmFjY2lhLmtvbYITd3d3
+LmFjdWNhcmFjY2lhLmtvbYIHcGxtLmNvbYILd3d3LnBsbS5jb20wDQYJKoZIhvcN
+AQELBQADggEBABSNf7GWJXxukfNoiImP0OaEX3Vrz/I8qkekK6mh0ld9DRT3NmWF
+DPRvhMajTPeJXMwTcwpB5aqFU4UjhkXPimSFUWdC4LV8Q+e43AiVXOx3yPfq9raY
+XSGxDAN3M+/O8Ov2wcffHd3c7og4K8QGyZYMuIL/8KaDKppQtSJpT97+pAhWL20a
+EMo5PYEik7vZQcPiYZFJqg0cGdV6h/anJmfLcsiB+RCdTdpNFYwx5hK+roAK22PP
+C1NzIQ9D+7a03nBt+9Zo6UzgIA+vNAOfTo62/xETfB9K8IX/8Nku4dChsC5LPiMa
+uXjv09eKNnGG0oNY5A3cgZEUJMmFOU9JRNs=
+-----END CERTIFICATE-----
+EOX
+}
+
+variable "private_key" {
+  default = <<EOX
+-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC3mM1PDLVKLGbz
+p0U3xJAY/g9n/aM5Z5B21hIFEtQlYPUXbuWVmiZKmVVRv7xi6CCzxtei9Ck82tlv
+goGqnob4x3g1IbwMXEKxtQsobanqNJRbzEZMeOH8CTAnj0QzVQToTE/3FvY1QICa
+Cz8iXfsbwcm5y7J0iB//m8xLN/JRQGrSHiiVes/+jQ7fmCIYZyTYH0RkUZ+8WecA
++gfKdITEiuaA+qeOS7srXuQ1aNyHlZ7GbjRkb2K1mlRI4C3290WlprLIYnbPn903
+Bayr1KztSPSvnQInzc7L+11EtEkEb/9TfLFnqIvC0oUJW6BhhdqO3zR2nf4+ZUOO
+E0mPWP2vAgMBAAECggEAELl4qmTL9u/IiRWJtqTPQ5eRK7XtMoN+o3Sou5GVhbop
+WXMestwR9OW24fWHYbMnl3jbl9qKDyMYf5Hx4esC/JKfHqfuC2o0ISAO3iXvPoh/
+o0UeekTgwSbNHi1s1wg9pDOfbTDISN2RWXcAz06kW0jx6Vzm6rqjv5MfrxJvnnsJ
+2noz1jWIgeLi9fcdYk2FNiqAc2LtPOnEgzOhNKUvkUJ9EoTrFuasnnfwxWHZlGyd
+H07Nydgk9mrJ/kMlSQeqQVBbjDR8Vv1skXEjF7CRGeEbqxZ1Q34gYAcrfTRA69Ff
+xbhqkS1m8g/NRjNwoJjbOWy5drYYn/LQWKJ480ZYcQKBgQD53M48ETBv6q3vBbb0
+9W7sJEpOLUX8L/PvK526ErtGdi/mpsqftpbXuu5Ll3GfyJU9j8uCxQp8g33I6tSu
++W0eocR50/cXvlDaFWfGfuwL6WVoBwjOcsR7l9NGEpUMr1FBF9Cwe2NUa0f0pawC
+d9dqmFNbeRvRUpLp8f8tyfFp6wKBgQC8G01sXtboosb9KqoPJRMr7/ajzWnHZ2RH
+CT2VUTiXTt4dkYwn7OZkzidjTVKeVOfJEyIW4UMo+voi3S5rr7ZvsxHIlQzsgwoU
+EzitR5hoTqobs40Rk3GeEUVbMGr1UYFjG1TbYGTFeQrOkRv8E/v5V4ujU83YnXWK
+8lH19fnmTQKBgGmfZa8OtSMaWZyJFeZHOjSowqB5kvQgcUXRckOOV4xZubYPG+iY
+DvvzEXjy9B1PdYcomicVlHE+RJYCbxXoarBgQeYeLH3k/diy48ONM8t1RmDLWHWt
+HlIAxFcC0+8gzYBuyNFR15OAJlLNFgGVF4MAEXzBnXjHJ0OuAOkiTOMxAoGAG+Ds
+A6C2tznQxhq5o476HWvuIO7Du6LuML0E3IlyGrK8pqM4o34v00befZArK34n8Bwe
+1EdEfeFciyg+xgT/w+RFQXYduTvelYUXxE61Hthxy7M7uBwjHasvnUk6wOr4gyi8
+1dqedMnwuRa2kBCiKp03+9fizTThA9vQG+T9yY0CgYEA8mk14iy3e6M1MVrsPTAg
+pu/EfU0Dgvin0T5HHVzJXxc/LxCxNu/U4jhz4BMGJAZQ+QR6SQx7BeLyKZpekCSz
+KsQF9Ea6R3lQFaGUyOueE7zZ/houu8oSlYFSa1CHTEFdsORA2vgGClRZHSF3Ttca
+t7PBTTRDQYDdRjYczFwwR68=
+-----END PRIVATE KEY-----
+EOX
+}
+
+
+variable "public_certificate" {
+  default = <<EOX
+-----BEGIN CERTIFICATE-----
+MIIENjCCAx6gAwIBAgIUBHYvSWzA0ggERo+LxGALpCm/78IwDQYJKoZIhvcNAQEL
+BQAwgYUxCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRYwFAYDVQQH
+DA1TYW4gRnJhbmNpc2NvMRUwEwYDVQQKDAxZb3VyIENvbXBhbnkxGDAWBgNVBAsM
+D1lvdXIgRGVwYXJ0bWVudDEYMBYGA1UEAwwPYWN1Y2FyYWNjaWEua29tMB4XDTI1
+MTIyMDE2MTUyMFoXDTI2MTIyMDE2MTUyMFowgYUxCzAJBgNVBAYTAlVTMRMwEQYD
+VQQIDApDYWxpZm9ybmlhMRYwFAYDVQQHDA1TYW4gRnJhbmNpc2NvMRUwEwYDVQQK
+DAxZb3VyIENvbXBhbnkxGDAWBgNVBAsMD1lvdXIgRGVwYXJ0bWVudDEYMBYGA1UE
+AwwPYWN1Y2FyYWNjaWEua29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAt5jNTwy1Sixm86dFN8SQGP4PZ/2jOWeQdtYSBRLUJWD1F27llZomSplVUb+8
+Yuggs8bXovQpPNrZb4KBqp6G+Md4NSG8DFxCsbULKG2p6jSUW8xGTHjh/AkwJ49E
+M1UE6ExP9xb2NUCAmgs/Il37G8HJucuydIgf/5vMSzfyUUBq0h4olXrP/o0O35gi
+GGck2B9EZFGfvFnnAPoHynSExIrmgPqnjku7K17kNWjch5Wexm40ZG9itZpUSOAt
+9vdFpaayyGJ2z5/dNwWsq9Ss7Uj0r50CJ83Oy/tdRLRJBG//U3yxZ6iLwtKFCVug
+YYXajt80dp3+PmVDjhNJj1j9rwIDAQABo4GbMIGYMB0GA1UdDgQWBBRgSOt++K89
+26znULp+/nHDbObLmzAfBgNVHSMEGDAWgBRgSOt++K8926znULp+/nHDbObLmzAP
+BgNVHRMBAf8EBTADAQH/MEUGA1UdEQQ+MDyCD2FjdWNhcmFjY2lhLmtvbYITd3d3
+LmFjdWNhcmFjY2lhLmtvbYIHcGxtLmNvbYILd3d3LnBsbS5jb20wDQYJKoZIhvcN
+AQELBQADggEBABSNf7GWJXxukfNoiImP0OaEX3Vrz/I8qkekK6mh0ld9DRT3NmWF
+DPRvhMajTPeJXMwTcwpB5aqFU4UjhkXPimSFUWdC4LV8Q+e43AiVXOx3yPfq9raY
+XSGxDAN3M+/O8Ov2wcffHd3c7og4K8QGyZYMuIL/8KaDKppQtSJpT97+pAhWL20a
+EMo5PYEik7vZQcPiYZFJqg0cGdV6h/anJmfLcsiB+RCdTdpNFYwx5hK+roAK22PP
+C1NzIQ9D+7a03nBt+9Zo6UzgIA+vNAOfTo62/xETfB9K8IX/8Nku4dChsC5LPiMa
+uXjv09eKNnGG0oNY5A3cgZEUJMmFOU9JRNs=
+-----END CERTIFICATE-----
+EOX
+}
+
+
+#variable "db_address" {
+#  default = data.terraform_remote_state.mysql00_state.address
+#}
+  ## - variables may not be allowed here
+
+#variable "db_port" { 
+#  default = data.terraform_remote_state.mysql00_state.port
+#}
+  ## variables unnnallowwedd herre
+
+
+variable "autoscaling_name" {
+  default = "autoscaling00 v0.02.d"
+}

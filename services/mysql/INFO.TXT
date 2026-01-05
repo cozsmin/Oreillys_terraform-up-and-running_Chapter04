@@ -1,0 +1,20 @@
+So the isi a copy of "Chapter03/last\ part\ \=\ stage\ \&\ global/stage/data-stores/mysql/"
+
+Original contgent ::
+
+
+Ja , so I put the s3 provider ( + dynamodb for sync or whatever ) in the "Projects/DevOps & Cloudz/terraform/O'reilly/Terraform up & Running - 2'd edition/00.DIR + LB rulez" dir
+
+and gonna put this in there too :
+
+#################################################
+
+data "terraform_remote_state" "db" {
+  backend = "s3"
+  config = {
+    bucket = "(YOUR_BUCKET_NAME)"
+    key    = "stage/data-stores/mysql/terraform.tfstate"
+    region = "us-east-2"
+  }
+}
+################################################
