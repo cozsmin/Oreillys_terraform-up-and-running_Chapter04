@@ -161,3 +161,11 @@ resource "aws_subnet" "publicsubnet00c" {
 }
 
 
+resource "aws_subnet" "subnet_ref0_01" {
+  vpc_id     = aws_vpc.vpc00.id
+  cidr_block = "10.0.254.0/24"
+
+  tags = {
+    Name = "${aws_vpc.vpc00.name}-subnet_ref0_01"
+  }
+}
